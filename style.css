@@ -1,0 +1,30 @@
+:root{--bg:#0B0B0F;--card:#17171C;--line:#2A2A33;--text:#F4F4F5;--muted:#A1A1AA;--blue:#3B82F6;--violet:#A78BFA;--orange:#FF8A3D}
+*{box-sizing:border-box;margin:0}
+html{background:var(--bg);color:var(--text);font:17px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--text)}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:28px 0}
+header.top img{height:26px;display:block}
+header.top nav a{color:var(--muted);text-decoration:none;font-size:15px;margin-left:20px}
+header.top nav a:hover{color:var(--text)}
+.hero{position:relative;text-align:center;padding:72px 0 88px}
+.glow{position:absolute;inset:-40px 0 auto;height:420px;margin:0 auto;max-width:560px;background:radial-gradient(closest-side,rgba(59,130,246,.45),rgba(167,139,250,.25) 55%,transparent);filter:blur(40px);z-index:-1}
+.hero .mark{width:96px;height:96px;border-radius:24px;box-shadow:0 20px 60px rgba(59,130,246,.35)}
+.hero h1{font-size:clamp(38px,7vw,64px);line-height:1.05;letter-spacing:-.02em;margin:28px 0 16px}
+.grad{background:linear-gradient(90deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:20px;max-width:520px;margin:0 auto}
+.badge{display:inline-flex;align-items:center;gap:10px;margin-top:36px;padding:14px 22px;border-radius:999px;background:var(--card);border:1px solid var(--line);color:var(--muted);font-weight:600;font-size:15px}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 12px var(--orange)}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;padding-bottom:96px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px}
+.card .icon{font-size:28px}
+.card h3{font-size:19px;margin:14px 0 6px}
+.card p{color:var(--muted);font-size:15px}
+footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between}
+footer nav a{color:var(--muted);text-decoration:none;margin-right:20px}
+footer nav a:hover{color:var(--text)}
+.doc{max-width:720px;padding:24px 0 80px}
+.doc h1{font-size:40px;letter-spacing:-.02em;margin:24px 0 32px}
+.doc h2{font-size:19px;margin:32px 0 8px}
+.doc p{color:#D4D4D8;margin:0 0 10px}
+.doc a{color:var(--violet)}
