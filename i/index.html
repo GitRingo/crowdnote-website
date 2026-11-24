@@ -69,7 +69,10 @@
     var b = document.createElement('b');
     b.textContent = r.inviter_username;
     who.appendChild(b);
-    who.appendChild(document.createTextNode(' hat ein Ticket für dich'));
+    who.appendChild(document.createTextNode(' war mit dir bei '));
+    var a = document.createElement('b');
+    a.textContent = r.artist_name;
+    who.appendChild(a);
     $('band').textContent = r.artist_name;
     $('venue').textContent = r.venue_name + ' · ' + r.city;
     $('date').textContent = new Date(r.concert_date).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
