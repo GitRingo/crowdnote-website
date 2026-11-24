@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Du hast ein Ticket auf crowdnote</title>
+<meta name="description" content="Trag das Konzert bei crowdnote ein und teilt eure Fotos.">
+<meta name="theme-color" content="#0B0B0F">
+<meta property="og:title" content="Du hast ein Ticket auf crowdnote">
+<meta property="og:description" content="Trag das Konzert bei crowdnote ein und teilt eure Fotos.">
+<meta property="og:image" content="https://crowdnote.de/icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=83e5bb01">
+<script>document.documentElement.classList.add("js")</script>
+<style>
+.ticket{max-width:420px;margin:24px auto 0;text-align:left;border-radius:20px;background:#17171f;border:1px solid #26262f;overflow:hidden}
+.ticket .top2{display:flex;gap:12px;padding:14px}
+.ticket .art{width:64px;height:64px;border-radius:12px;background:#26262f;object-fit:cover;flex:none}
+.ticket .band{font-size:20px;font-weight:800}
+.ticket .meta{font-size:13px;color:#9a9aa6;margin-top:3px}
+.ticket .sep{border-top:1px dashed #33333d;margin:0 10px}
+.ticket .rate{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;font-size:13px;color:#9a9aa6}
+.ticket .pill{padding:5px 10px;border-radius:14px;background:rgba(61,99,245,.18);color:#8fa6ff;font-weight:600;font-size:12px}
+.ticket .quote{padding:0 14px 14px;font-size:14px;line-height:1.4;color:#d6d6de}
+.who b{color:#FF8A3D}
+</style>
+</head><body>
+<header class="top"><div class="wrap"><a href="/"><img src="/wordmark.png" alt="crowdnote"></a>
+<nav><a href="/#features">Features</a><a href="/support/">Support</a></nav></div></header>
+<main class="wrap"><section class="hero"><h1 class="up" style="--d:.1s;font-size:clamp(28px,6vw,44px)" id="title">Du hast ein <span class="grad">Ticket.</span></h1>
+<p class="sub up who" style="--d:.2s" id="who"></p>
+<div class="ticket up" style="--d:.25s" id="ticket" hidden>
+  <div class="top2"><img class="art" id="art" alt="" hidden><div><div class="band" id="band"></div><div class="meta" id="venue"></div><div class="meta" id="date"></div></div></div>
+  <div class="sep"></div>
+  <div class="rate"><span id="ratelabel"></span><span class="pill" id="rating" hidden></span></div>
+  <div class="quote" id="notes" hidden></div>
+</div>
+<p class="sub up" style="--d:.3s" id="hint">Öffne den Link auf deinem iPhone mit installierter App.</p>
+<div class="up" style="--d:.35s"><a class="badge" id="open" href="/" style="text-decoration:none">In der App öffnen</a></div>
+<p class="sub up" style="--d:.4s;font-size:15px;margin-top:22px">crowdnote ist bald im App Store.<br>Nach dem Installieren diesen Link nochmal antippen.</p>
+</section></main>
+<div class="wrap"><footer><span>© 2026 crowdnote · Made in Köln</span>
+<nav><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a><a href="/nutzungsbedingungen/">Nutzungsbedingungen</a><a href="/support/">Support</a></nav></footer></div>
+<script>
+(function(){
+  var code = new URLSearchParams(location.search).get('c') || '';
+  var $ = function(id){ return document.getElementById(id); };
+  function expired(){
+    $('title').textContent = 'Diese Einladung ist abgelaufen';
+    $('who').textContent = 'Bitte deinen Freund, dir einen neuen Link zu schicken.';
+    $('hint').hidden = true;
+    $('open').hidden = true;
+  }
+  if (!/^[A-Za-z0-9]{6,32}$/.test(code)) { expired(); return; }
+  var url = 'cn://invite/' + code;
+  $('open').href = url;
+  fetch('https://mlqaowwvmjirtveqegkp.supabase.co/rest/v1/rpc/get_concert_invite', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': 'sb_publishable_QFJ4fH0dscFODkwE9G1cNg_kBkrQ-X8'
+    },
+    body: JSON.stringify({ p_code: code })
+  }).then(function(r){ return r.ok ? r.json() : []; }).then(function(rows){
+    var r = Array.isArray(rows) ? rows[0] : rows;
+    if (!r) { expired(); return; }
+    $('title').textContent = 'Du warst auch dabei?';
+    var who = $('who');
+    var b = document.createElement('b');
+    b.textContent = r.inviter_username;
+    who.appendChild(b);
+    who.appendChild(document.createTextNode(' hat ein Ticket für dich'));
+    $('band').textContent = r.artist_name;
+    $('venue').textContent = r.venue_name + ' · ' + r.city;
+    $('date').textContent = new Date(r.concert_date).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
+    $('ratelabel').textContent = r.inviter_username + 's Rating';
+    if (typeof r.rating === 'number') { $('rating').textContent = '★ ' + r.rating.toFixed(1); $('rating').hidden = false; }
+    if (r.notes && r.notes.trim()) { $('notes').textContent = '„' + r.notes.trim() + '“'; $('notes').hidden = false; }
+    if (r.artist_image_url && /^https:\/\//.test(r.artist_image_url)) { $('art').src = r.artist_image_url; $('art').hidden = false; }
+    $('ticket').hidden = false;
+  }).catch(function(){});
+  location.href = url;
+})();
+</script>
+<script src="/site.js?v=83e5bb01"></script>
+</body></html>
